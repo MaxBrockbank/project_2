@@ -30,20 +30,20 @@ const showPage = (list, page) => {
   let startIndex = (page * itemsPerPage) - itemsPerPage;
   let endIndex = page * itemsPerPage;
 
-  for(let i = 0; i<=list.length; i++) {
-    if ( i >= startIndex && i < endIndex){
+   for (let i = 0; i<=list.length; i+=1){
+    if(i>=startIndex && i<=endIndex){
       list[i].style.display = 'block';
     } else{
       list[i].style.display = 'none';
     }
   }
-}
-console.log(showPage(studentList, 1));
+};
+showPage(studentList, 1);
 
 /***
    Create the `appendPageLinks function` to generate, append, and add
    functionality to the pagination buttons.
-
+***/
 const appendPageLinks = list => {
   const div = document.createElement('div');
   div.className = 'pagination';
@@ -61,5 +61,5 @@ const appendPageLinks = list => {
 };
 appendPageLinks(studentList);
 
-***/
+
 // Remember to delete the comments that came with this file, and replace them with your own code comments.
