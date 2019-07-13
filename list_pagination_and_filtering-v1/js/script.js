@@ -59,15 +59,14 @@ const appendPageLinks = list => {
     a.textContent = i + 1;
     }
   document.addEventListener('click', () => {
-    if(event.target.tagName === 'a'){
+    if(event.target.tagName === 'A'){
      showPage(studentList, event.target.textContent)
      for(let i=0; i<list.length/itemsPerPage; i++){
        ul.children[i].firstElementChild.classList.remove('active')
      };
      event.target.className = 'active';
-    }
+   };
   })
-  showPage(studentList, event.target.textContent);
 };
 appendPageLinks(studentList);
 
