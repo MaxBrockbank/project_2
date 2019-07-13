@@ -30,7 +30,7 @@ const showPage = (list, page) => {
   let startIndex = (page * itemsPerPage) - itemsPerPage;
   let endIndex = page * itemsPerPage;
 
-   for (let i = 0; i<=list.length; i+=1){
+   for (let i = 0; i<list.length; i+=1){
     if(i>=startIndex && i<=endIndex){
       list[i].style.display = 'block';
     } else{
@@ -57,7 +57,17 @@ const appendPageLinks = list => {
     li.appendChild(a);
     a.setAttribute('href', '#');
     a.textContent = i + 1;
-  };
+    }
+  document.addEventListener('click', () => {
+    if(event.target.tagName === 'a'){
+     showPage(studentList, event.target.textContent)
+     for(let i=0; i<list.length/itemsPerPage; i++){
+       ul.children[i].firstElementChild.classList.remove('active')
+     };
+     event.target.className = 'active';
+    }
+  })
+  showPage(studentList, event.target.textContent);
 };
 appendPageLinks(studentList);
 
