@@ -87,7 +87,7 @@ searchDiv.appendChild(searchButton);
 
 input.addEventListener ('keyup', function(e){
   const term = e.target.value.toLowerCase();
-  const students = studentNames
+  const students = studentList
   Array.from(students).forEach(function(student){
     const name = student.textContent;
     if(name.toLowerCase().indexOf(term) != -1){
