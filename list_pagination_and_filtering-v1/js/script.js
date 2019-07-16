@@ -18,7 +18,7 @@ FSJS project 2 - List Filter and Pagination
 ***/
 const studentList = document.querySelectorAll('.student-item');
 const itemsPerPage = 10;
-
+const studentNames = document.querySelectorAll('h3');
 
 
 /** showPage function. Sets the start and end index number for the pages.
@@ -31,14 +31,14 @@ const showPage = (list, page) => {
   let endIndex = page * itemsPerPage;
 
    for (let i = 0; i<list.length; i+=1){
-    if(i>=startIndex && i<=endIndex){
+    if(i>startIndex && i<endIndex){
       list[i].style.display = 'block';
     } else{
       list[i].style.display = 'none';
     }
   }
 };
-showPage(studentList, 1);
+
 
 /***
    Create the `appendPageLinks function` to generate, append, and add
@@ -50,7 +50,8 @@ const appendPageLinks = list => {
   document.querySelector('.page').appendChild(div);
   const ul = document.createElement('ul');
   div.appendChild(ul);
-  for (let i = 0; i < (list.length/itemsPerPage); i++){
+  const pageNumber = list.length/itemsPerPage;
+  for (let i = 0; i < pageNumber; i++){
     const li = document.createElement('li');
     ul.appendChild(li);
     const a = document.createElement('a');
@@ -61,14 +62,42 @@ const appendPageLinks = list => {
   document.addEventListener('click', () => {
     if(event.target.tagName === 'A'){
      showPage(studentList, event.target.textContent)
-     for(let i=0; i<list.length/itemsPerPage; i++){
+     for(let i=0; i < pageNumber; i++){
        ul.children[i].firstElementChild.classList.remove('active')
      };
      event.target.className = 'active';
    };
   })
 };
+
+
+
+// Adding the search bar via DOM manipulation
+const pageHeader = document.querySelector('.page-header');
+const searchDiv = document.createElement('div');
+searchDiv.className = "student-search";
+const input = document.createElement('input')
+input.type = 'text';
+input.placeholder = 'Search for students';
+pageHeader.appendChild(searchDiv);
+searchDiv.appendChild(input);
+const searchButton = document.createElement('button');
+searchButton.textContent = 'Search';
+searchDiv.appendChild(searchButton);
+
+input.addEventListener ('keyup', function(e){
+  const term = e.target.value.toLowerCase();
+  const students = studentNames
+  Array.from(students).forEach(function(student){
+    const name = student.textContent;
+    if(name.toLowerCase().indexOf(term) != -1){
+      student.style.display ='block';
+    } else{
+      student.style.display = 'none';
+    }
+  })
+})
+
+
 appendPageLinks(studentList);
-
-
-// Remember to delete the comments that came with this file, and replace them with your own code comments.
+showPage(studentList, 1);
