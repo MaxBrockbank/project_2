@@ -18,8 +18,6 @@ FSJS project 2 - List Filter and Pagination
 ***/
 const studentList = document.querySelectorAll('.student-item');
 const itemsPerPage = 10;
-const studentNames = document.querySelectorAll('h3');
-
 
 /** showPage function. Sets the start and end index number for the pages.
 Loops through the length of the const 'list', which is then compared to the starting and ending index numbers.
@@ -87,10 +85,10 @@ searchDiv.appendChild(searchButton);
 
 input.addEventListener ('keyup', function(e){
   const term = e.target.value.toLowerCase();
-  const students = studentList
+  const students = studentList;
   Array.from(students).forEach(function(student){
     const name = student.textContent;
-    if(name.toLowerCase().indexOf(term) != -1){
+    if(name.toLowerCase().includes(term) === true){
       student.style.display ='block';
     } else{
       student.style.display = 'none';
