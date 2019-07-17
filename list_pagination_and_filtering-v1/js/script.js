@@ -29,7 +29,7 @@ const showPage = (list, page) => {
   let endIndex = page * itemsPerPage;
 
    for (let i = 0; i<list.length; i+=1){
-    if(i>startIndex && i<endIndex){
+    if(i>=startIndex && i<endIndex){
       list[i].style.display = 'block';
     } else{
       list[i].style.display = 'none';
@@ -43,6 +43,9 @@ const showPage = (list, page) => {
    functionality to the pagination buttons.
 ***/
 const appendPageLinks = list => {
+ if(document.querySelector('div''pagination') != null){
+    ul.removeChild('div' 'pagination');
+  }
   const div = document.createElement('div');
   div.className = 'pagination';
   document.querySelector('.page').appendChild(div);
@@ -59,7 +62,7 @@ const appendPageLinks = list => {
     }
   document.addEventListener('click', () => {
     if(event.target.tagName === 'A'){
-     showPage(studentList, event.target.textContent)
+     showPage(list, event.target.textContent)
      for(let i=0; i < pageNumber; i++){
        ul.children[i].firstElementChild.classList.remove('active')
      };
@@ -68,8 +71,20 @@ const appendPageLinks = list => {
   })
 };
 
-
-
+// A function to clear off all the students from being displayed.
+const clearStudents = () => {
+  for (let i = 0; i < studentList.length; i++){
+    studentList[i].style.display = 'none';
+  }
+}
+// A function that displays 'No Results Found' if there are no names in the nameArray
+const noResults = () => {
+  clearStudents();
+  const message = document.createElement('h2');
+  message.textContent = 'No Results Found'
+  const ul = document.querySelector('.student-list')
+  ul.appendChild(message);
+}
 // Adding the search bar via DOM manipulation
 const pageHeader = document.querySelector('.page-header');
 const searchDiv = document.createElement('div');
@@ -79,21 +94,18 @@ input.type = 'text';
 input.placeholder = 'Search for students';
 pageHeader.appendChild(searchDiv);
 searchDiv.appendChild(input);
-const searchButton = document.createElement('button');
-searchButton.textContent = 'Search';
-searchDiv.appendChild(searchButton);
+
 
 input.addEventListener ('keyup', function(e){
+  clearStudents();
   const term = e.target.value.toLowerCase();
-  const students = studentList;
-  Array.from(students).forEach(function(student){
-    const name = student.textContent;
-    if(name.toLowerCase().includes(term) === true){
-      student.style.display ='block';
-    } else{
-      student.style.display = 'none';
-    }
-  })
+  const names = studentList;
+  const namesArray = [];
+  if(names.toLowerCase().includes(term) === true){
+    names.push(namesArray);
+  } else {
+    return noResults();
+  }
 })
 
 
