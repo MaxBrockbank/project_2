@@ -43,47 +43,50 @@ const showPage = (list, page) => {
    functionality to the pagination buttons.
 ***/
 const appendPageLinks = list => {
- if(document.querySelector('div''pagination') != null){
-    ul.removeChild('div' 'pagination');
-  }
-  const div = document.createElement('div');
-  div.className = 'pagination';
-  document.querySelector('.page').appendChild(div);
-  const ul = document.createElement('ul');
-  div.appendChild(ul);
-  const pageNumber = list.length/itemsPerPage;
-  for (let i = 0; i < pageNumber; i++){
-    const li = document.createElement('li');
-    ul.appendChild(li);
-    const a = document.createElement('a');
-    li.appendChild(a);
-    a.setAttribute('href', '#');
-    a.textContent = i + 1;
+  const paginationDiv = document.querySelector('div.pagination');
+  const pageDiv = document.querySelector('div.page');
+   if(paginationDiv !== null){
+      pageDiv.removeChild(paginationDiv);
     }
-  document.addEventListener('click', () => {
-    if(event.target.tagName === 'A'){
-     showPage(list, event.target.textContent)
-     for(let i=0; i < pageNumber; i++){
-       ul.children[i].firstElementChild.classList.remove('active')
+    const div = document.createElement('div');
+    const ul = document.createElement('ul');
+    div.className = 'pagination';
+    document.querySelector('.page').appendChild(div);
+    div.appendChild(ul);
+    const pageNumber = list.length/itemsPerPage;
+    for (let i = 0; i < pageNumber; i++){
+      const li = document.createElement('li');
+      ul.appendChild(li);
+      const a = document.createElement('a');
+      li.appendChild(a);
+      a.setAttribute('href', '#');
+      a.textContent = i + 1;
+      }
+    document.addEventListener('click', () => {
+      if(event.target.tagName === 'A'){
+       showPage(list, event.target.textContent)
+       for(let i=0; i < pageNumber; i++){
+         ul.children[i].firstElementChild.classList.remove('active')
+       };
+       event.target.className = 'active';
      };
-     event.target.className = 'active';
-   };
-  })
-};
+    })
+  };
 
-// A function to clear off all the students from being displayed.
-const clearStudents = () => {
-  for (let i = 0; i < studentList.length; i++){
-    studentList[i].style.display = 'none';
+  // A function to clear off all the students from being displayed.
+  const clearStudents = () => {
+    for (let i = 0; i < studentList.length; i++){
+      studentList[i].style.display = 'none';
+    }
   }
-}
-// A function that displays 'No Results Found' if there are no names in the nameArray
-const noResults = () => {
-  clearStudents();
-  const message = document.createElement('h2');
-  message.textContent = 'No Results Found'
-  const ul = document.querySelector('.student-list')
-  ul.appendChild(message);
+  // A function that displays 'No Results Found' if there are no names in the nameArray
+  const noResults = () => {
+    clearStudents();
+    const message = document.createElement('h2');
+    message.textContent = 'No Results Found';
+    const h2Tag = document.getElementByTagName('h2');
+    const newDiv = document.createElement('div').appendChild(message);
+    h2Tag.appendChild(newDiv);
 }
 // Adding the search bar via DOM manipulation
 const pageHeader = document.querySelector('.page-header');
@@ -95,18 +98,21 @@ input.placeholder = 'Search for students';
 pageHeader.appendChild(searchDiv);
 searchDiv.appendChild(input);
 
-
+// Adding functionality to the search bar
 input.addEventListener ('keyup', function(e){
   clearStudents();
   const term = e.target.value.toLowerCase();
-  const names = studentList;
-  const namesArray = [];
-  if(names.toLowerCase().includes(term) === true){
-    names.push(namesArray);
-  } else {
-    return noResults();
+  const matchesArray = [];
+  for(let i=0; i<studentList.length; i++){
+    const names = studentList[i].innerHTML.toLowerCase();
+    if(names.includes(term)){
+      studentList[i].push(matchesArray);
+    } else {
+      noResults();
+    }
   }
-})
+
+});
 
 
 appendPageLinks(studentList);
