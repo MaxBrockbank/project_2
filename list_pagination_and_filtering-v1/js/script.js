@@ -79,15 +79,13 @@ const appendPageLinks = list => {
       studentList[i].style.display = 'none';
     }
   }
-  // A function that displays 'No Results Found' if there are no names in the nameArray
-  const noResults = () => {
-    clearStudents();
-    const message = document.createElement('h2');
-    message.textContent = 'No Results Found';
-    const h2Tag = document.getElementByTagName('h2');
-    const newDiv = document.createElement('div').appendChild(message);
-    h2Tag.appendChild(newDiv);
-}
+  // Creates and hides the message 'No Results Found'
+  const noResults = document.createElement('h2');
+  noResults.textContent = 'No Results Found';
+  const ul = document.querySelector('ul.student-list')
+  ul.appendChild(noResults);
+  noResults.style.display = 'none';
+
 // Adding the search bar via DOM manipulation
 const pageHeader = document.querySelector('.page-header');
 const searchDiv = document.createElement('div');
@@ -98,20 +96,27 @@ input.placeholder = 'Search for students';
 pageHeader.appendChild(searchDiv);
 searchDiv.appendChild(input);
 
+const button = document.createElement('button');
+button.textContent = 'Search';
+searchDiv.appendChild(button);
+
 // Adding functionality to the search bar
-input.addEventListener ('keyup', function(e){
+button.addEventListener ('click', function(e){
   clearStudents();
-  const term = e.target.value.toLowerCase();
-  const matchesArray = [];
+  const term = input.value.toLowerCase();
+  let matchesArray = [];
   for(let i=0; i<studentList.length; i++){
-    const names = studentList[i].innerHTML.toLowerCase();
-    if(names.includes(term)){
-      studentList[i].push(matchesArray);
-    } else {
-      noResults();
+    let names = studentList[i].textContent
+    if(names.toLowerCase().includes(term)){
+      studentList[i].style.display = 'block';
+      matchesArray.push(studentList[i]);
+      showPage(matchesArray, 1);
+      appendPageLinks(matchesArray);
+    }
+    if(matchesArray.length === 0){
+      noResults.style.display = 'block';
     }
   }
-
 });
 
 
